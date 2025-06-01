@@ -17,20 +17,26 @@ Thanks for your interest in contributing to **aws-local-sync**! This guide outli
    cd aws-local-sync
    ```
 
-2. **Explore available commands**
+2. **Install Git hooks**
+
+   ```sh
+   make hooks    # Install pre-commit hooks via lefthook
+   ```
+
+3. **Explore available commands**
 
    ```sh
    make help
    ```
 
-3. **Build and run**
+4. **Build and run**
 
    ```sh
    make build    # Build with version info
    make run      # Build and execute
    ```
 
-4. **Run tests and quality checks**
+5. **Run tests and quality checks**
 
    ```sh
    make test     # Run tests with race detection and coverage
@@ -40,16 +46,28 @@ Thanks for your interest in contributing to **aws-local-sync**! This guide outli
 
 ## Development Workflow
 
+### Git Hooks
+
+This project uses [lefthook](https://github.com/evilmartians/lefthook) for Git hooks to ensure code quality:
+
+- **Pre-commit hooks** automatically run:
+  - `golangci-lint` with auto-fix for formatting issues
+  - `go mod tidy` when go.mod changes are staged
+- **Manual hook execution**: `make hooks-run`
+- **Bypass hooks** when necessary: `git commit --no-verify`
+
 ### Making Changes
 
 1. **Before coding**: Run `make audit` to ensure a clean baseline
-2. **Format code**: Automatic via golangci-lint (includes goimports)
+2. **Format code**: Automatic via pre-commit hooks or `make lint`
 3. **Test your changes**: `make test` generates coverage reports
-4. **Lint check**: `make lint` catches style and potential issues
-5. **Final audit**: `make audit` before committing
+4. **Lint check**: Automatic via pre-commit hooks or `make lint`
+5. **Final audit**: `make audit` before pushing
 
 ### Useful Make Targets
 
+- `make hooks` - Install Git hooks
+- `make hooks-run` - Manually run pre-commit checks
 - `make tidy` - Clean up dependencies and format code
 - `make clean` - Remove build artifacts
 - `make upgradeable` - Check for dependency updates
