@@ -73,6 +73,14 @@ This project uses [lefthook](https://github.com/evilmartians/lefthook) for Git h
 - `make upgradeable` - Check for dependency updates
 - `make build-static` - Build static binary for containers
 
+### Testing GitHub Actions Locally
+
+You can test GitHub Actions workflows locally using [act](https://github.com/nektos/act):
+
+```sh
+act pull_request    # Simulate PR workflow
+```
+
 ## Contributing Guidelines
 
 - Feature requests and bug reports are welcome via GitHub Issues
@@ -93,6 +101,9 @@ internal/               # Core logic (private to this module)
 build/                  # Build artifacts, npm wrapper (future)
 bin/                    # Compiled binaries (git-ignored)
 dist/                   # GoReleaser output (git-ignored)
+.github/
+  ├── workflows/        # GitHub Actions CI/CD pipelines
+  └── dependabot.yml    # Automated dependency updates
 ```
 
 ## Pull Request Process
@@ -102,6 +113,16 @@ dist/                   # GoReleaser output (git-ignored)
 3. Update documentation if changing functionality
 4. Submit PR with clear description of changes and motivation
 5. Ensure CI checks pass (uses same Make targets)
+
+### CI/CD Pipeline
+
+Pull requests automatically trigger GitHub Actions workflows that run:
+- `make lint` - Code style and static analysis
+- `make test` - Unit tests with race detection and coverage
+- `make audit` - Security scanning and dependency verification
+- `make build` - Binary compilation verification
+
+Coverage reports are uploaded as artifacts for each workflow run.
 
 ## Release Process
 
