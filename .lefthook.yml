@@ -8,3 +8,5 @@ pre-commit:
     go-mod-tidy:
       glob: "go.mod"
       run: go mod tidy && git add go.mod go.sum
+    gitleaks:
+      run: gitleaks git --staged --no-banner --redact -v

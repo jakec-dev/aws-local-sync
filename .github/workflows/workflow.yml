@@ -6,6 +6,8 @@ on:
       - develop
       - master
 
+permissions: read-all
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -13,10 +15,10 @@ jobs:
       matrix:
         go-version: ['1.24.3']
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
     - name: Set up Go
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@6d5114b80faf1e90e980a273e2c95e1642c7dc55 # v5.2.0
       with:
         go-version: ${{ matrix.go-version }}
         cache: true
@@ -25,7 +27,7 @@ jobs:
       run: go version
 
     - name: Set up golangci-lint
-      uses: golangci/golangci-lint-action@v8
+      uses: golangci/golangci-lint-action@3a919529898de77ec3da873e3063ca4b10e7f5cc # v8.0.0
       with:
         version: v2.1
 
@@ -42,7 +44,7 @@ jobs:
       run: make build
     
     - name: Upload coverage
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
       with:
         name: coverage-${{ matrix.go-version }}
         path: coverage.html

@@ -1,0 +1,22 @@
+# This file defines code ownership for automatic review assignment
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global owners - these owners will be requested for review when someone opens a pull request
+* @jakec-dev
+
+# Go source files
+*.go @jakec-dev
+
+# GitHub Actions workflows
+.github/ @jakec-dev
+
+# Documentation
+*.md @jakec-dev
+docs/ @jakec-dev
+
+# Configuration files
+Makefile @jakec-dev
+go.mod @jakec-dev
+go.sum @jakec-dev
+.golangci.yml @jakec-dev
+.goreleaser.yml @jakec-dev
