@@ -1,5 +1,7 @@
 # aws-local-sync
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/jakec-dev/aws-local-sync/badge)](https://scorecard.dev/viewer/?uri=github.com/jakec-dev/aws-local-sync)
+
 **aws-local-sync** is a high-performance CLI tool that syncs data from AWS services into your local development environment. It's designed to be **simple**, **fast**, **reliable**, and **developer-friendly**, with support for plugins, caching, and seamless workflow integration.
 
 Key features:
