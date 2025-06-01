@@ -45,17 +45,23 @@ help: ## Show all available make targets with descriptions
 install: ## Install all development dependencies, tools, and git hooks
 	@echo "Installing development tools..."
 	@command -v golangci-lint >/dev/null 2>&1 || \
-		(echo "→ Installing golangci-lint..." && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest)
+		(echo "→ Installing golangci-lint..." && go install github.com/golangci/golangci-lint/cmd/golangci-lint@v2.1.6)
 	@command -v lefthook >/dev/null 2>&1 || \
-		(echo "→ Installing lefthook..." && go install github.com/evilmartians/lefthook@latest)
+		(echo "→ Installing lefthook..." && go install github.com/evilmartians/lefthook@v1.11.13)
 	@command -v gitleaks >/dev/null 2>&1 || \
-		(echo "→ Installing gitleaks..." && go install github.com/zricethezav/gitleaks/v8@latest)
+		(echo "→ Installing gitleaks..." && go install github.com/zricethezav/gitleaks/v8@v8.27.0)
 	@command -v govulncheck >/dev/null 2>&1 || \
 		(echo "→ Installing govulncheck..." && go install golang.org/x/vuln/cmd/govulncheck@latest)
 	@command -v staticcheck >/dev/null 2>&1 || \
-		(echo "→ Installing staticcheck..." && go install honnef.co/go/tools/cmd/staticcheck@latest)
+		(echo "→ Installing staticcheck..." && go install honnef.co/go/tools/cmd/staticcheck@v0.6.1)
 	@command -v go-licenses >/dev/null 2>&1 || \
-		(echo "→ Installing go-licenses..." && go install github.com/google/go-licenses@latest)
+		(echo "→ Installing go-licenses..." && go install github.com/google/go-licenses@v1.6.0)
+	@command -v goreleaser >/dev/null 2>&1 || \
+		(echo "→ Installing goreleaser..." && go install github.com/goreleaser/goreleaser/v2@v2.9.0)
+	@command -v cosign >/dev/null 2>&1 || \
+		(echo "→ Installing cosign..." && go install github.com/sigstore/cosign/v2/cmd/cosign@v2.5.0)
+	@command -v syft >/dev/null 2>&1 || \
+		(echo "→ Installing syft..." && go install github.com/anchore/syft/cmd/syft@v1.26.1)
 	@echo "→ Installing git hooks..."
 	@lefthook install
 	@echo "→ Downloading Go dependencies..."
@@ -75,7 +81,7 @@ audit: test ## Run full audit: verify modules, scan for issues and vulnerabiliti
 	go mod tidy -diff
 	go mod verify
 	go vet ./...
-	go run honnef.co/go/tools/cmd/staticcheck@latest -checks=all,-ST1000,-U1000 ./...
+	go run honnef.co/go/tools/cmd/staticcheck@v0.6.1 -checks=all,-ST1000,-U1000 ./...
 	go run golang.org/x/vuln/cmd/govulncheck@latest ./...
 	@echo "→ Checking for unpinned dependencies..."
 	@go list -m -json all | jq -r 'select(.Indirect != true) | select(.Main != true) | "\(.Path) \(.Version)"' || echo "No dependencies found"
