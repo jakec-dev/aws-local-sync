@@ -4,9 +4,8 @@ Thanks for your interest in contributing to **aws-local-sync**! This guide outli
 
 ## Prerequisites
 
-- Go 1.21 or later
+- Go 1.24.3 or later
 - Make
-- [golangci-lint](https://golangci-lint.run/usage/install/) (for linting)
 
 ## Development Setup
 
@@ -17,11 +16,18 @@ Thanks for your interest in contributing to **aws-local-sync**! This guide outli
    cd aws-local-sync
    ```
 
-2. **Install Git hooks**
+2. **Install development tools**
 
    ```sh
-   make hooks    # Install pre-commit hooks via lefthook
+   make install  # Installs all required dev tools and dependencies
    ```
+
+   This will install:
+   - golangci-lint (code linting)
+   - lefthook (git hooks)
+   - gitleaks (secret scanning)
+   - govulncheck (vulnerability scanning)
+   - staticcheck (static analysis)
 
 3. **Explore available commands**
 
@@ -66,7 +72,7 @@ This project uses [lefthook](https://github.com/evilmartians/lefthook) for Git h
 
 ### Useful Make Targets
 
-- `make hooks` - Install Git hooks
+- `make install` - Install all dev tools and git hooks
 - `make hooks-run` - Manually run pre-commit checks
 - `make tidy` - Clean up dependencies and format code
 - `make clean` - Remove build artifacts
