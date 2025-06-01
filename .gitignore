@@ -28,6 +28,12 @@ docs/tasks/
 ## GoLang
 #################
 
+# Build dir
+bin/
+
+# goreleaser
+dist/
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
