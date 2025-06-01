@@ -2,6 +2,12 @@
 
 Thanks for your interest in contributing to **aws-local-sync**! This guide outlines the basics for setting up your development environment, understanding the project structure, and contributing effectively.
 
+## Prerequisites
+
+- Go 1.21 or later
+- Make
+- [golangci-lint](https://golangci-lint.run/usage/install/) (for linting)
+
 ## Development Setup
 
 1. **Clone the repo**
@@ -11,42 +17,96 @@ Thanks for your interest in contributing to **aws-local-sync**! This guide outli
    cd aws-local-sync
    ```
 
-2. **Build the CLI**
+2. **Explore available commands**
 
-  ```sh
-  go build -o bin/aws-local-sync ./cmd/aws-local-sync
-  ```
+   ```sh
+   make help
+   ```
 
-3. **Run it**
+3. **Build and run**
 
-  ```sh
-  ./bin/aws-local-sync
-  ```
+   ```sh
+   make build    # Build with version info
+   make run      # Build and execute
+   ```
 
-4. **Run tests**
+4. **Run tests and quality checks**
 
-  (Test suite coming soon)
+   ```sh
+   make test     # Run tests with race detection and coverage
+   make lint     # Run golangci-lint
+   make audit    # Full audit including security scanning
+   ```
+
+## Development Workflow
+
+### Making Changes
+
+1. **Before coding**: Run `make audit` to ensure a clean baseline
+2. **Format code**: Automatic via golangci-lint (includes goimports)
+3. **Test your changes**: `make test` generates coverage reports
+4. **Lint check**: `make lint` catches style and potential issues
+5. **Final audit**: `make audit` before committing
+
+### Useful Make Targets
+
+- `make tidy` - Clean up dependencies and format code
+- `make clean` - Remove build artifacts
+- `make upgradeable` - Check for dependency updates
+- `make build-static` - Build static binary for containers
 
 ## Contributing Guidelines
 
-- Feature requests and bug reports are welcome via GitHub Issues.
-- Follow idiomatic Go and ensure your code passes go fmt.
-- Use semantic commits (e.g., feat: add support for S3 source).
-- Prefer small, focused pull requests with clear descriptions.
+- Feature requests and bug reports are welcome via GitHub Issues
+- Code must pass all linting rules (see `.golangci.yml`)
+- Tests required for new functionality (aim for >80% coverage)
+- Use semantic commits (e.g., `feat: add S3 bucket support`)
+- Prefer small, focused pull requests with clear descriptions
 
 ## Project Structure
 
 ```text
-cmd/aws-local-sync/     # CLI entry point (main.go) using Cobra
-internal/               # Core logic (sync engine, providers, targets)
-  ├── sync/             # Sync manager and orchestration
+cmd/aws-local-sync/     # CLI entry point (main.go)
+internal/               # Core logic (private to this module)
+  ├── config/           # Configuration handling
   ├── providers/        # AWS service-specific data exporters
-  ├── targets/          # Local import destinations (e.g. Docker, dir)
-  └── config/           # YAML parsing, validation, and discovery
-pkg/                    # Optional: shared libraries (exported APIs)
-scripts/                # Dev scripts and tooling
-testdata/               # Synthetic data for testing
+  ├── sync/             # Sync manager and orchestration
+  └── targets/          # Local import destinations
+build/                  # Build artifacts, npm wrapper (future)
+bin/                    # Compiled binaries (git-ignored)
+dist/                   # GoReleaser output (git-ignored)
 ```
+
+## Pull Request Process
+
+1. Fork the repository and create your branch from `develop`
+2. Ensure all tests pass: `make audit`
+3. Update documentation if changing functionality
+4. Submit PR with clear description of changes and motivation
+5. Ensure CI checks pass (uses same Make targets)
+
+## Release Process
+
+Releases are automated via GoReleaser when a new tag is pushed:
+
+```sh
+git tag -a v0.1.0 -m "Release v0.1.0"
+git push origin v0.1.0
+```
+
+To test release process locally:
+```sh
+make release-snapshot
+```
+
+## Code Style
+
+Our `.golangci.yml` enforces comprehensive style rules. Key points:
+- No global variables (use dependency injection)
+- Explicit error handling (no ignored errors)
+- Meaningful variable names
+- Package comments required
+- See full configuration in `.golangci.yml`
 
 ## Thanks!
 
