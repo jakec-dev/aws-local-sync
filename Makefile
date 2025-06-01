@@ -75,6 +75,17 @@ tidy: ## Clean up go.mod/go.sum and format all Go source files
 build: ## Build the Go binary with version, commit, and build time metadata
 	go build -trimpath -ldflags $(LDFLAGS) -o ${BUILD_DIR}/${BINARY_NAME} ${MAIN_PACKAGE}
 
+.PHONY: hooks
+hooks: ## Install git hooks via lefthook
+	@command -v lefthook >/dev/null 2>&1 || \
+		(echo "Installing lefthook..." && go install github.com/evilmartians/lefthook@latest)
+	@lefthook install
+	@echo "Git hooks installed successfully"
+
+.PHONY: hooks-run
+hooks-run: ## Run pre-commit hooks manually on all files
+	@lefthook run pre-commit
+
 .PHONY: build-static
 build-static: ## Build a statically linked binary for release (CGO disabled)
 	CGO_ENABLED=0 go build -trimpath -ldflags $(LDFLAGS) \
