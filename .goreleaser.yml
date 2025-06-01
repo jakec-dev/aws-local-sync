@@ -15,7 +15,7 @@ builds:
       - -X main.BuildTime={{ .Date }}
 
 archives:
-  - formats: [tar.gz]
+  - formats: ["tar.gz"]
     name_template: >-
       {{ .ProjectName }}_
       {{- title .Os }}_
@@ -25,11 +25,25 @@ archives:
       {{- if .Arm }}v{{ .Arm }}{{ end }}
     format_overrides:
       - goos: windows
-        formats: [zip]
+        formats: ["zip"]
 
 checksum:
   name_template: "{{ .ProjectName }}_checksums.txt"
   algorithm: sha256
+
+signs:
+  - cmd: cosign
+    env:
+      - COSIGN_EXPERIMENTAL=1
+    certificate: '${artifact}.pem'
+    args:
+      - sign-blob
+      - '--output-certificate=${certificate}'
+      - '--output-signature=${signature}'
+      - '${artifact}'
+      - "--yes" # needed on cosign 2.0.0+
+    artifacts: checksum
+    output: true
 
 sboms:
   - artifacts: archive
@@ -37,12 +51,68 @@ sboms:
 
 changelog:
   sort: asc
+  use: github
+  groups:
+    - title: "✨ Features"
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: "🐛 Bug Fixes"
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: "📚 Documentation"
+      regexp: '^.*?docs(\([[:word:]]+\))??!?:.+$'
+      order: 2
+    - title: "🧪 Testing"
+      regexp: '^.*?test(\([[:word:]]+\))??!?:.+$'
+      order: 3
+    - title: "🔧 Other Changes"
+      order: 999
   filters:
     exclude:
-      - "^docs:"
-      - "^test:"
+      - "^chore:"
+      - "^ci:"
+      - "^build\\(deps\\):"
 
 release:
   github:
     owner: jakec-dev
     name: aws-local-sync
+
+  draft: true
+  replace_existing_draft: true
+  
+  prerelease: auto
+  
+  name_template: "{{ .ProjectName }} {{ .Tag }}"
+  
+  header: |
+    ## AWS Local Sync {{ .Tag }}
+    
+    High-performance CLI tool that syncs data from AWS services (RDS, DynamoDB, S3, Elasticsearch, etc.) to your local development environment.
+    
+    ### Highlights
+  
+  footer: |
+    
+    ---
+    
+    ### Installation
+    
+    #### Binary installation
+    ```bash
+    # Download and extract (example for Linux x86_64)
+    curl -sSL https://github.com/jakec-dev/aws-local-sync/releases/download/{{ .Tag }}/aws-local-sync_Linux_x86_64.tar.gz | tar xz
+    
+    # Verify checksum signature
+    cosign verify-blob \
+      --certificate aws-local-sync_checksums.txt.pem \
+      --signature aws-local-sync_checksums.txt.sig \
+      aws-local-sync_checksums.txt
+    ```
+    
+    #### Go installation
+    ```bash
+    go install github.com/jakec-dev/aws-local-sync/cmd/aws-local-sync@{{ .Tag }}
+    ```
+    
+    **Full Changelog**: https://github.com/jakec-dev/aws-local-sync/compare/{{ .PreviousTag }}...{{ .Tag }}
