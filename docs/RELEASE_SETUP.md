@@ -125,7 +125,7 @@ If something goes wrong:
    - Immediately create a security advisory
    - Prepare a patch release
    - Follow responsible disclosure practices
-
+Unexpected value 'continue-on-error'
 ## Monitoring
 
 ### OpenSSF Scorecard
@@ -163,6 +163,11 @@ Each release should include:
    - Check if syft is installed
    - Verify GoReleaser configuration
    - Check workflow permissions
+
+4. **SLSA provenance generation fails (exit code 27)**:
+   - This is caused by external Rekor service unavailability
+   - Our workflows use `compile-generator: true` to avoid this dependency
+   - The generated provenance is still valid and secure
 
 ### Getting Help
 
