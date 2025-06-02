@@ -73,6 +73,7 @@ jobs:
   release:
     needs: [validate, test]
     runs-on: ubuntu-latest
+    environment: release 
     permissions:
       contents: write  # To create releases and tags
       packages: write  # To push container images (if needed)
