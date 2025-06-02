@@ -125,7 +125,7 @@ If something goes wrong:
    - Immediately create a security advisory
    - Prepare a patch release
    - Follow responsible disclosure practices
-Unexpected value 'continue-on-error'
+
 ## Monitoring
 
 ### OpenSSF Scorecard
