@@ -164,6 +164,11 @@ Each release should include:
    - Verify GoReleaser configuration
    - Check workflow permissions
 
+4. **SLSA provenance generation fails (exit code 27)**:
+   - This is caused by external Rekor service unavailability
+   - Our workflows use `compile-generator: true` to avoid this dependency
+   - The generated provenance is still valid and secure
+
 ### Getting Help
 
 - GoReleaser docs: https://goreleaser.com

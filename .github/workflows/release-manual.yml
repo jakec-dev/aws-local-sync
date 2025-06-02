@@ -141,3 +141,4 @@ jobs:
     with:
       base64-subjects: "${{ needs.release.outputs.hashes }}"
       upload-assets: true
+      compile-generator: true  # Self-contained build to avoid Rekor dependency issues
