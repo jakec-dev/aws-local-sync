@@ -3,7 +3,7 @@ pre-commit:
   commands:
     golangci-lint:
       glob: "*.go"
-      run: golangci-lint run --fix --fast-only {staged_files}
+      run: golangci-lint run --fix --new-from-rev HEAD~1
       stage_fixed: true
     go-mod-tidy:
       glob: "go.mod"

@@ -22,7 +22,7 @@ Key features:
 go install github.com/jakec-dev/aws-local-sync/cmd/aws-local-sync@latest
 
 # Then use it from anywhere:
-aws-local-sync
+aws-local-sync --help
 ```
 
 ### Option 2: Run from source
@@ -33,10 +33,20 @@ git clone https://github.com/jakec-dev/aws-local-sync.git
 cd aws-local-sync
 
 # Build the CLI
-go build -o bin/aws-local-sync ./cmd/aws-local-sync
+make build
 
 # Run the CLI
-./bin/aws-local-sync
+./bin/aws-local-sync --help
+```
+
+### Basic Usage
+
+```sh
+# Show available commands
+aws-local-sync --help
+
+# Check version and build info
+aws-local-sync version
 ```
 
 ## Contributing
