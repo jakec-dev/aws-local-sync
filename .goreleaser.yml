@@ -86,31 +86,24 @@ release:
   name_template: "{{ .ProjectName }} {{ .Tag }}"
   
   header: |
-    ## AWS Local Sync {{ .Tag }}
-    
-    High-performance CLI tool that syncs data from AWS services (RDS, DynamoDB, S3, Elasticsearch, etc.) to your local development environment.
-    
-    ### Highlights
+    High-performance CLI tool that syncs data from AWS services to your local development environment.
   
   footer: |
+    ## Installation
     
-    ---
-    
-    ### Installation
-    
-    #### Binary installation
+    ### Binary installation
     ```bash
     # Download and extract (example for Linux x86_64)
     curl -sSL https://github.com/jakec-dev/aws-local-sync/releases/download/{{ .Tag }}/aws-local-sync_Linux_x86_64.tar.gz | tar xz
     
-    # Verify checksum signature
+    #### Verify checksum signature
     cosign verify-blob \
       --certificate aws-local-sync_checksums.txt.pem \
       --signature aws-local-sync_checksums.txt.sig \
       aws-local-sync_checksums.txt
     ```
     
-    #### Go installation
+    ### Go installation
     ```bash
     go install github.com/jakec-dev/aws-local-sync/cmd/aws-local-sync@{{ .Tag }}
     ```

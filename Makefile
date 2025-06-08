@@ -11,9 +11,9 @@ GIT_COMMIT 		:= $(shell git rev-parse --short HEAD)
 BUILD_TIME 		:= $(shell date +%FT%T%z)
 
 LDFLAGS := "-s -w \
-    -X 'main.Version=$(VERSION)' \
-    -X 'main.GitCommit=$(GIT_COMMIT)' \
-    -X 'main.BuildTime=$(BUILD_TIME)'"
+    -X 'github.com/jakec-dev/aws-local-sync/internal/version.version=$(VERSION)' \
+    -X 'github.com/jakec-dev/aws-local-sync/internal/version.gitCommit=$(GIT_COMMIT)' \
+    -X 'github.com/jakec-dev/aws-local-sync/internal/version.buildTime=$(BUILD_TIME)'"
 
 GREEN  := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
@@ -75,6 +75,10 @@ install: ## Install all development dependencies, tools, and git hooks
 .PHONY: lint
 lint: ## Run code linters via golangci-lint
 	golangci-lint run
+
+.PHONY: lint-fix
+lint-fix: ## Fix linting and formatting issues
+	golangci-lint run --fix
 
 .PHONY: audit
 audit: test ## Run full audit: verify modules, scan for issues and vulnerabilities
